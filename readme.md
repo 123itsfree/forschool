@@ -1,3 +1,3 @@
-https://beneficial-cowboy-egg-profit.trycloudflare.com
+https://appearing-hurricane-sociology-annex.trycloudflare.com
 
 https://labs.2z2.top/user
