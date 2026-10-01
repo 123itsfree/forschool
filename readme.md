@@ -1,3 +1,3 @@
-https://volumes-arg-rentals-corp.trycloudflare.com
+https://facing-eternal-environments-mainstream.trycloudflare.com
 
 https://labs.2z2.top/user
