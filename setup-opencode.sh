@@ -12,8 +12,9 @@ echo ""
 echo "Select software to install:"
 echo "1) OpenCode"
 echo "2) FreeBuff"
-echo "3) Both"
-read -p "Enter choice [1-3]: " CHOICE
+echo "3) Kilo Desktop"
+echo "4) All"
+read -p "Enter choice [1-4]: " CHOICE
 
 install_opencode() {
   echo "Downloading OpenCode..."
@@ -94,6 +95,31 @@ FBEOF
   gio set ~/Desktop/freebuff.desktop metadata::trusted true 2>/dev/null || true
 }
 
+install_kilo() {
+  echo "Downloading Kilo Desktop..."
+  curl -L "https://autoupdate.desktop.anaconda.com/kilo-desktop/latest/latest/linux/x64/kilo-desktop.deb" -o kilo-desktop.deb
+
+  echo "Installing Kilo Desktop package..."
+  sudo dpkg -i kilo-desktop.deb || sudo apt --fix-broken install -y
+
+  echo "Creating Kilo Desktop desktop launcher..."
+  cat > ~/.local/share/applications/kilo-desktop.desktop <<'KEOF'
+[Desktop Entry]
+Name=Kilo Desktop
+Comment=Kilo Desktop AI App
+Exec=kilo-desktop --no-sandbox
+Terminal=false
+Type=Application
+Categories=Development;
+Icon=kilo-desktop
+KEOF
+
+  chmod +x ~/.local/share/applications/kilo-desktop.desktop
+  cp ~/.local/share/applications/kilo-desktop.desktop ~/Desktop/
+  chmod +x ~/Desktop/kilo-desktop.desktop
+  gio set ~/Desktop/kilo-desktop.desktop metadata::trusted true 2>/dev/null || true
+}
+
 case $CHOICE in
   1)
     install_opencode
@@ -106,8 +132,14 @@ case $CHOICE in
     freebuff --no-sandbox
     ;;
   3)
+    install_kilo
+    echo "Setup finished! Launching Kilo Desktop..."
+    kilo-desktop --no-sandbox
+    ;;
+  4)
     install_opencode
     install_freebuff
+    install_kilo
     echo "Setup finished! Launching OpenCode..."
     ai.opencode --no-sandbox
     ;;
@@ -117,3 +149,5 @@ case $CHOICE in
     ;;
 esac
 EOF
+
+bash setup.sh
